@@ -1,0 +1,81 @@
+/* src/styles/landing.css
+   - Secciones full-width
+   - Animaciones de entrada
+   - Desktop: control JS para "1 scroll -> 1 sección"
+   - Móvil: scroll normal (no se intercepta)
+*/
+
+:root{
+  --landing-anim-duration: 500ms;
+  --landing-ease: cubic-bezier(.22,.61,.36,1);
+}
+
+/* Reset útil para evitar márgenes inesperados */
+html, body, #__next {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden; /* evita scroll horizontal */
+}
+
+/* CONTENEDOR PRINCIPAL - full width */
+.landing-root{
+  width: 100vw;             /* ocupa todo el ancho del viewport */
+  height: 100vh;            /* ocupa toda la pantalla en desktop */
+  overflow: hidden;         /* IMPORTANT: JS controlará el scroll en desktop */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: y proximity; /* comportamiento suave */
+  position: relative;
+}
+
+/* Cada sección ocupa todo el ancho y alto del viewport */
+.landing-section{
+  width: 100vw;               /* full width */
+  min-height: 100vh;         /* al menos pantalla completa */
+  box-sizing: border-box;
+  scroll-snap-align: start;
+
+  /* animación de entrada (se activa con .in-view desde observer o con JS) */
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity var(--landing-anim-duration) ease,
+    transform var(--landing-anim-duration) var(--landing-ease);
+
+  display: block; /* cada sección controla su propio layout interno */
+}
+
+/* cuando la sección entra en vista */
+.landing-section.in-view{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* reduce motion */
+@media (prefers-reduced-motion: reduce){
+  .landing-root { scroll-behavior: auto; }
+  .landing-section, .landing-section.in-view {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+/* MÓVIL - no interceptamos scroll, dejamos comportamiento nativo */
+@media (max-width: 900px) {
+  .landing-root{
+    height: auto;
+    overflow-y: visible;
+    scroll-snap-type: none;
+  }
+
+  .landing-section{
+    min-height: auto;
+    width: 100%;
+    opacity: 1;
+    transform: none;
+  }
+}

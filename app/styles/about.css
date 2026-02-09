@@ -1,0 +1,240 @@
+/* src/styles/about.css
+   Página: Sobre nosotros
+   - Fondo como imagen completa en .about-hero
+   - En móvil: se oculta la imagen y se usa color #fdd672
+   - Scroll-snap + animaciones (IntersectionObserver)
+*/
+
+/* Variables locales */
+:root{
+  --accent: #b34b12;
+  --yellow-stage: #f5d96f;
+  --bg-mobile: #fdd672;    /* color de fallback en móvil */
+  --max-width: 1200px;
+  --nav-height: 88px;
+  --text-dark: #1b1b1b;
+  --muted: #6b5a3a;
+}
+
+/* Contenedor principal: scroll-snap vertical */
+.about-root {
+ /* scroll-snap-type: y mandatory;*/
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  min-height: 100vh;
+  background: #fff;
+}
+
+/* Cada sección ocupa al menos 100vh para efecto "diapositiva" */
+.about-section {
+  scroll-snap-align: start;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* CONTENEDOR CENTRAL (3 columnas en desktop) */
+.about-section .container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 520px 340px; /* left | center | right */
+  gap: 28px;
+  align-items: center;
+}
+
+/* Ajuste para secciones que usan 2 columnas */
+.about-section .container.two-col {
+  grid-template-columns: 1fr 1fr;
+}
+
+/* COLUMNAS BASE */
+.col { box-sizing: border-box; }
+
+/* LEFT (texto grande) */
+.left h1 {
+  font-size: 56px;
+  line-height: 1.02;
+  margin: 0 0 18px 0;
+  color: var(--text-dark);
+  font-weight: 800;
+}
+.left .accent { color: var(--accent); }
+.lead { color: var(--muted); max-width: 520px; }
+
+/* CENTER: centrado para la parte visual */
+.center { display:flex; align-items:center; justify-content:center; position:relative; }
+.about-egg { display:block; width:420px; max-width:85%; height:auto; transform-origin:center; will-change:transform,opacity; pointer-events:none; }
+
+/* RIGHT: tarjetas */
+aside.right { display:flex; flex-direction:column; gap:22px; align-items:stretch; }
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.95));
+  padding: 14px;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+  margin-top: 10px;
+}
+.card img { width:100%; height:auto; border-radius:6px; display:block; margin-bottom:10px; }
+.card h4 { margin: 6px 0; color: #3b2f12; }
+.card p { margin:0; color: #6b5a3a; font-size:14px; line-height:1.4; }
+
+/* Estilos de sección */
+.about-values { background: linear-gradient(180deg, #fff 0%, #fff7e0 100%); }
+.about-cta { background: #fffaf6; }
+
+/* CTA button */
+.cta-wrap { text-align:center; display:flex; flex-direction:column; gap:16px; align-items:center; }
+.btn.cta-btn {
+  display:inline-block;
+  background:#f3b900;
+  color:#111;
+  padding:14px 28px;
+  border-radius:36px;
+  font-weight:700;
+  text-decoration:none;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+/* ---------------------------------------------------
+   ANIMACIONES: base y variantes (se activan con .in-view)
+   --------------------------------------------------- */
+.animate-on-scroll { opacity: 0; transform: translateY(18px); transition: transform 480ms cubic-bezier(.2,.9,.2,1), opacity 480ms ease; will-change: transform, opacity; }
+
+/* Fade up */
+.fade-up { transform: translateY(22px); }
+.fade-up.in-view { transform: translateY(0); opacity: 1; }
+
+/* Slide in left */
+.slide-in-left { transform: translateX(-28px); opacity: 0; }
+.slide-in-left.in-view { transform: translateX(0); opacity: 1; transition-duration: 560ms; }
+
+/* Slide in right */
+.slide-in-right { transform: translateX(28px); opacity: 0; }
+.slide-in-right.in-view { transform: translateX(0); opacity: 1; transition-duration: 560ms; }
+
+/* Zoom in (para imágenes si aplica) */
+.zoom-in { transform: scale(0.94) translateY(6px); opacity: 0; }
+.zoom-in.in-view { transform: scale(1) translateY(0); opacity: 1; transition-duration: 720ms; }
+
+/* Pequeña rotación sutil al entrar (opcional) */
+.about-egg.in-view { transform: scale(1) translateY(0) rotate(-1deg); }
+
+/* ---------------------------------------------------
+   FONDO: usar imagen como fondo en la sección HERO
+   ---------------------------------------------------
+*/
+.about-hero {
+  background-image: url('/images/about-egg.png');
+  background-repeat: no-repeat;
+  background-size: cover;            
+  background-position: right center; 
+  background-blend-mode: normal;
+  position: relative;
+  overflow: visible;
+}
+
+.about-hero .about-egg { display: none; }
+
+.about-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  
+}
+
+.about-hero .container { position: relative; z-index: 5; }
+
+/* ---------------------------------------------------
+   RESPONSIVE: ajusta layout y fallback en móvil
+   --------------------------------------------------- */
+
+/* Pantallas medias */
+@media (max-width: 1200px) {
+  .about-section .container {
+    grid-template-columns: 1fr 420px; /* left | center stacked, right se mueve abajo */
+  }
+  aside.right { display: none; } /* ocultamos right column en pantallas medias para simplificar */
+  .about-hero { background-position: 65% center; }
+  .about-egg { width: 380px; }
+}
+
+/* MÓVIL: ocultar fondo-imagen y usar color de contraste (fallback) */
+@media (max-width: 900px) {
+
+  /* Fondo móvil */
+  .about-hero {
+    background-image: none !important;
+    background-color: var(--bg-mobile);
+  }
+
+  .about-hero::after { display: none; }
+
+  /* Layout en columna */
+  .about-section .container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+
+  /* Orden vertical */
+  .center { order: 1; }
+  .left { order: 2; text-align: center; }
+  aside.right { 
+    order: 3;
+    display: flex;        /* ← mostramos cards */
+    width: 100%;
+  }
+
+  /* Texto */
+  .left h1 { font-size: 34px; }
+
+  /* Imagen huevo */
+  .about-egg {
+    width: 85vw;
+    max-width: 420px;
+    margin: 6px auto;
+    display: block;
+  }
+
+  /* Cards en móvil */
+  .card {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+  }
+
+  .card img {
+    width: 100%;
+    height: auto;
+  }
+
+  .left .accent { color: #8b2f0f; }
+
+  .about-section { padding: 28px 16px; }
+
+  .lead { color: rgba(27,27,27,0.85); }
+
+  .btn.cta-btn {
+    padding: 12px 20px;
+    font-size: 15px;
+  }
+}
+
+
+/* Teléfonos muy pequeños */
+@media (max-width: 480px) {
+  .left h1 { font-size: 30px; line-height: 1.05; }
+  .lead { font-size: 14px; }
+  .btn.cta-btn { padding: 12px 16px; font-size: 14px; }
+}
+
+/* Pequeños detalles */
+.left .accent { font-style: normal; }
+[tabindex="0"]:focus { outline: 3px solid rgba(179,75,18,0.12); outline-offset: 3px; border-radius:6px; }

@@ -1,0 +1,374 @@
+:root{
+  --yellow-1: #f4dc70;
+  --yellow-2: #f7e495;
+  --cream: #faeeba;
+  --accent: #f3b900;
+  --nearwhite: #f5f5f7;
+  --text-dark: #1b1b1b;
+  --max-width: 1200px;
+  --nav-height: 88px; 
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Reset / básico */
+* { box-sizing: border-box; }
+html, body, #__next { height: 100%; }
+body {
+  margin: 0;
+  background: var(--nearwhite);
+  color: var(--text-dark);
+  overflow-x: hidden; /* evita scroll horizontal por imágenes o negativos */
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 60;
+  padding: 14px 20px;
+  background: transparent;
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+}
+
+.navbar-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Links izquierda (es desktop por defecto) */
+.nav-left {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.nav-left a {
+  text-decoration: none;
+  color: #6a5b2c;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 6px 0;
+}
+
+.nav-left a.active {
+  color: #3b2f12;
+  font-weight: 700;
+}
+
+/* Logo centro */
+.nav-logo {
+  display: flex;
+  justify-content: center;
+}
+.nav-logo img {
+  height: 56px;
+  display: block;
+}
+
+/* Redes derecha y boton menu */
+.nav-right {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  align-items: center;
+}
+
+.nav-right img {
+  height: 22px;
+  opacity: 0.85;
+  transition: 0.18s ease;
+}
+.nav-right img:hover { opacity: 1; }
+
+/* boton menu (hamburguesa) - oculto en desktop */
+.menu-btn {
+  display: none;
+  font-size: 26px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: 8px;
+  line-height: 1;
+  padding: 6px;
+}
+
+/* ================= HERO (fondo y layout) ================= */
+/* El hero ocupa al menos 100vh; el contenido se centra verticalmente. */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--nav-height) 20px 40px; /* deja espacio para navbar */
+  background-image: url('/images/bg-circles.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+/* overlay opcional para contraste (dejar 0 por defecto) */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.0);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* contenido interno centrado y con ancho máximo */
+.hero-inner {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 8px;
+  min-height: calc(100vh - var(--nav-height));
+}
+
+/* LEFT: contenedor para la imagen "grande" */
+.hero-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 10px;
+  position: relative;
+}
+
+/* Imagen grande: se comporta diferente según el viewport */
+.egg-left {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 720px; /* límite en desktops */
+  max-height: calc(100vh - var(--nav-height) - 80px); /* no exceder viewport */
+  object-fit: contain;
+  transform: translateZ(0);
+}
+
+/* RIGHT: texto, tagline y CTA */
+.hero-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 28px;
+  padding-right: 80px;
+  justify-content: center;
+}
+
+/* Ajustes tipográficos */
+.tagline {
+  font-size: 20px;
+  font-weight: 700;
+  max-width: 420px;
+  line-height: 1.2;
+  color: var(--text-dark);
+}
+
+/* CTA */
+.cta {
+  position: relative;
+  display: inline-block;
+  background: var(--accent);
+  color: #111;
+  border: none;
+  padding: 16px 34px;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 40px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: transform 180ms cubic-bezier(.2,.9,.2,1), box-shadow 180ms ease, background 140ms ease;
+  will-change: transform, box-shadow;
+  /* animación sutil y lenta (float/pulse) */
+  animation: cta-pulse 3.8s ease-in-out infinite;
+}
+
+/* pulso/levitación suave */
+@keyframes cta-pulse {
+  0%   { transform: translateY(0); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+  50%  { transform: translateY(-3px); box-shadow: 0 18px 32px rgba(0,0,0,0.10); }
+  100% { transform: translateY(0); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+}
+
+/* Hover / focus: realce y pausa de la animación para mejor control */
+.cta:hover,
+.cta:focus {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 46px rgba(0,0,0,0.14);
+  outline: none;
+  animation-play-state: paused; /* evita que el pulso compita con hover */
+  /* ligero gradiente para dar profundidad */
+  background: linear-gradient(180deg, var(--accent), #e0a600);
+}
+
+/* Estilo de foco accesible */
+.cta:focus-visible {
+  box-shadow: 0 0 0 6px rgba(243,185,0,0.18), 0 16px 36px rgba(0,0,0,0.12);
+  border-radius: 40px;
+}
+
+/* Active (presionado) */
+.cta:active {
+  transform: translateY(-1px) scale(0.995);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+}
+
+/* Tamaños móviles: adapta el padding / fuente */
+@media (max-width:900px){
+  .cta{ padding:14px 28px; font-size:18px; }
+}
+
+
+/* huevo peque bottom-right */
+.egg-right {
+  position: absolute;
+  right: 36px;
+  bottom: 12px;
+  width: 320px;
+  z-index: 4;
+  pointer-events: none;
+  transform: translateZ(0);
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Desktop grande */
+@media (min-width:1201px){
+  .hero { background-position: center center; }
+  .hero-left { justify-content: flex-start; padding-left: 40px; }
+  .hero-right { align-items: flex-end; padding-right: 100px; }
+}
+
+/* Tablets / pantallas medias */
+@media (max-width:1200px){
+  .hero {
+    background-position: 60% center; 
+    padding-top: calc(var(--nav-height) + 20px);
+  }
+}
+
+/* ==================== MÓVIL: menú overlay fijo + ajustes hero ==================== */
+@media (max-width:900px){
+  .hero {
+    background-size: cover;
+    background-position: top center;
+    padding-top: calc(var(--nav-height) + 10px);
+  }
+
+  .hero-inner{
+    flex-direction: column;
+    text-align: center;
+    gap: 18px;
+    padding-top: 8px;
+    padding-bottom: 40px;
+    min-height: calc(100vh - var(--nav-height));
+  }
+
+  .hero-left{
+    order: 1;
+    width: 100%;
+    padding: 0;
+  }
+
+  /* Imagen huevo grande en móvil */
+  .egg-left{
+    max-width: 92vw;
+    width: auto;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  .hero-right{
+    order: 2;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  .tagline{ font-size: 18px; }
+  .cta{ padding: 14px 28px; font-size: 18px; }
+
+  /* ocultamos la imagen huevo2 para evitar amontonamiento en móvil */
+  .egg-right{ display: none; }
+
+  /* Mostrar botón menú (hamburguesa) */
+  .menu-btn{ display: block; z-index: 120; }
+
+  /* NAV: overlay FIXED que no empuja el contenido */
+  .nav-left{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: calc(var(--nav-height) + 18px); /* deja espacio para logo/menu superior */
+    gap: 20px;
+    background: linear-gradient(180deg, rgba(244,220,112,0.98), rgba(247,228,149,0.98));
+    transform: translateY(-100%); 
+    transition: transform 0.32s cubic-bezier(.22,.9,.3,1);
+    will-change: transform;
+    overflow-y: auto; 
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 40px;
+    z-index: 115; 
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  }
+
+  /* Estado abierto: añadir la clase .open a .nav-left */
+  .nav-left.open {
+    transform: translateY(0);
+  }
+
+  .nav-left a{
+    font-size: 20px;
+    padding: 10px 0;
+    color: #3b2f12;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Mantener visibles logo y redes en la parte superior*/
+  .navbar-inner{
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
+  .nav-logo{ display: flex; justify-content: center; z-index: 120; }
+  .nav-right{ display: flex; gap: 12px; align-items: center; z-index: 120; }
+  .nav-right img{ height: 20px; }
+
+  /* bloquear scroll de body cuando se abra el menú*/
+  body.menu-open { overflow: hidden; }
+}
+
+/* Teléfonos muy pequeños */
+@media (max-width:480px){
+  .tagline{ font-size: 16px; padding: 0 6px; }
+  .cta{ font-size: 17px; padding: 12px 22px; }
+  .navbar{ padding: 10px 12px; }
+  .navbar-inner{ gap: 8px; }
+  .nav-left.open{ transform: translateY(0); }
+}
+
+/* ================= Pequeños detalles visuales ================= */
+/* Asegura que los enlaces y botones no permitan selección indeseada */
+a, button { -webkit-tap-highlight-color: transparent; }
