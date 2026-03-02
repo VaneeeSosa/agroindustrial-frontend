@@ -1,3 +1,4 @@
+"use client";
 export default function Hero() {
   return (
     <section className="hero" id="inicio">
@@ -10,7 +11,16 @@ export default function Hero() {
           <p className="tagline">
             Gallinas libres, yema intensa y sabor real. Si vas a comer huevo, que valga la pena.
           </p>
-          <button className="cta">Ver Productos</button>
+          <button
+            className="cta"
+            onClick={() => {
+              document.getElementById("products")
+                ?.scrollIntoView({ behavior: "smooth" });
+            }}
+          >
+            Ver Productos
+          </button>
+
         </div>
 
         <img src="/images/egg-right.png" alt="Huevo" className="egg-right" />

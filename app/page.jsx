@@ -28,11 +28,11 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="landing-section">
+        <section id="products" className="landing-section">
           <ProductsPage />
         </section>
 
-        <section className="landing-section">
+        <section id="contact" className="landing-section">
           <ContactPage />
         </section>
 
