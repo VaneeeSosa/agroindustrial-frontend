@@ -81,3 +81,54 @@ html, body, #__next {
     transform: none;
   }
 }
+/* =========================================================
+   AJUSTES EXTRA PARA MÓVIL – SCROLL COMPLETAMENTE NATURAL
+========================================================= */
+
+/* Refuerzo para dispositivos táctiles (no solo por ancho) */
+@media (pointer: coarse) {
+
+  .landing-root{
+    height: auto !important;
+    min-height: auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    scroll-snap-type: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  .landing-section{
+    min-height: auto !important;
+    height: auto !important;
+    scroll-snap-align: none !important;
+  }
+
+  html, body, #__next{
+    height: auto !important;
+    touch-action: pan-y;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Si decides usar clase JS "no-snap" */
+body.no-snap .landing-root{
+  scroll-snap-type: none !important;
+  scroll-behavior: auto !important;
+  overflow-y: auto !important;
+  height: auto !important;
+}
+
+body.no-snap .landing-section{
+  scroll-snap-align: none !important;
+  min-height: auto !important;
+  height: auto !important;
+}
+
+/* Fix moderno para problemas de 100vh en móviles (barra dinámica) */
+@supports (height: 100dvh) {
+  @media (max-width: 900px) {
+    .landing-root{
+      height: auto !important;
+    }
+  }
+}

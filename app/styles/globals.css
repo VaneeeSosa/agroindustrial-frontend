@@ -380,3 +380,5 @@ nav button {
 /* ================= Pequeños detalles visuales ================= */
 /* Asegura que los enlaces y botones no permitan selección indeseada */
 a, button { -webkit-tap-highlight-color: transparent; }
+
+
