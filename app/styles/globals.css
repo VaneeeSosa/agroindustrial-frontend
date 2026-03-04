@@ -162,8 +162,8 @@ nav button {
   display: block;
   width: 100%;
   height: auto;
-  max-width: 720px; /* límite en desktops */
-  max-height: calc(100vh - var(--nav-height) - 80px); /* no exceder viewport */
+  max-width: 720px;
+  max-height: calc(100vh - var(--nav-height) - 80px); 
   object-fit: contain;
   transform: translateZ(0);
 }
@@ -316,7 +316,7 @@ nav button {
   .egg-right{ display: none; }
 
   /* Mostrar botón menú (hamburguesa) */
-  .menu-btn{ display: block; z-index: 120; }
+  .menu-btn{ display: block; z-index: 120; align-items: flex-end;}
 
   /* NAV: overlay FIXED que no empuja el contenido */
   .nav-left{
